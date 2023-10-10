@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DateOperations
 {
     public class DateOps
     {
-        public int DateDiffDays(string dateFormat, string from, string to)
+        public int DateDiffDays(DateTime from, DateTime to, List<DateTime> holidays)
         {
-            DateTime fromDate = DateTime.ParseExact(from, dateFormat, CultureInfo.InvariantCulture);
-            DateTime toDate = DateTime.ParseExact(to, dateFormat, CultureInfo.InvariantCulture);
-            TimeSpan dateDiff = fromDate - toDate;
-            return Math.Abs(dateDiff.Days);
+            int businessDays = 0;
+            
+            while (from <= to)
+            {
+                if (from.DayOfWeek != DayOfWeek.Saturday && from.DayOfWeek != DayOfWeek.Sunday && !holidays.Contains(from) ) businessDays++;
+                from = from.AddDays(1);
+            }
+            return businessDays;
         }
     }
 }
